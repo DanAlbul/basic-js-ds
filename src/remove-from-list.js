@@ -23,21 +23,43 @@ const { ListNode } = require('../extensions/list-node.js');
  * }
  */
 
+
 function removeKFromList(l, k) {
-	if (!l.next) {
-		return null;
-	}
+	let head = l
+	let found = false;
 
-  let deletedNode = null;
-
-
-  while (l.next && l.next.value === k) {
-    deletedNode = l.next;
-
-    // Переназначаем следующий за head узел на новый head.
-    this.head = this.head.next;
+  while (head && head.value === k) {
+    head = head.next;
+		found = true;
   }
 
+  let current = head;
+
+  while (current && current.next) {
+    if (current.next.value === k) {
+      current.next = current.next.next;
+			found = true;
+    } else {
+      current = current.next;
+    }
+  }
+
+  if (!found) {
+    let newNode = new ListNode(k);
+    if (!head) {
+      // If the list is empty, set the new node as the head
+      head = newNode;
+    } else {
+      // Traverse to the end and add the new node
+      current = head;
+      while (current.next) {
+        current = current.next;
+      }
+      current.next = newNode;
+  	}
+	}
+
+	return head
 }
 
 module.exports = {
